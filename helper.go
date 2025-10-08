@@ -12,7 +12,7 @@ func GetCommandFromAI(userPrompt string) (string, string, error) {
 	ctx := context.Background()
 
 	client, err := genai.NewClient(ctx, &genai.ClientConfig{
-		APIKey:  "REMOVED", // if empty, it will use GEMINI_API_KEY env var
+		APIKey:  "", // if empty, it will use GEMINI_API_KEY env var
 		Backend: genai.BackendGeminiAPI,
 	})
 	if err != nil {
