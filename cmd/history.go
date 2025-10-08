@@ -8,7 +8,7 @@ import (
 )
 
 func showHistory() {
-	file, err := os.Open("lihelp_commands.log")
+	file, err := os.Open("~/.lihelp_commands.log")
 	if err != nil {
 		fmt.Println("⚠️ Could not open log file:", err)
 		return

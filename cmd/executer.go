@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var logFile = "lihelp_commands.log"
+var logFile = "~/.lihelp_commands.log"
 
 // 🛠 Run the command using shell
 func runCommand(cmd string) {
