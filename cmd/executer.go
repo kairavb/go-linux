@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -45,6 +46,13 @@ func needsSudo(cmd string) bool {
 
 // 📒 Log command + explanation to file
 func logCommand(userQuery, command, explanation string) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Println("⚠️ Could not retrieve home directory:", err)
+		return
+	}
+	logFile := filepath.Join(homeDir, ".lihelp_commands.log")
+
 	f, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println("⚠️ Could not log command:", err)

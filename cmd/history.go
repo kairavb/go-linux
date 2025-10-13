@@ -4,11 +4,18 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
 func showHistory() {
-	file, err := os.Open("~/.lihelp_commands.log")
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Println("⚠️ Could not retrieve home directory:", err)
+		return
+	}
+	logFile := filepath.Join(homeDir, ".lihelp_commands.log")
+	file, err := os.Open(logFile)
 	if err != nil {
 		fmt.Println("⚠️ Could not open log file:", err)
 		return
