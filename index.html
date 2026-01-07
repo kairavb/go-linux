@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lihelp — Go Based Linux CLI Tool</title>
+  <style>
+    :root {
+      --bg-light: #f9f9f9;
+      --text-light: #222;
+      --bg-dark: #121212;
+      --text-dark: #f9f9f9;
+      --accent: #4f46e5;
+      --border: rgba(0,0,0,0.1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+      border-bottom: 1px solid var(--border);
+      
+      /* --- NEW STICKY HEADER --- */
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: var(--bg-light);
+      z-index: 1000;
+      box-sizing: border-box; /* Ensures padding doesn't break width */
+    }
+
+    /* --- NEW: Dark mode background for sticky header --- */
+    body.dark header {
+      background-color: var(--bg-dark);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      color: inherit;
+      transition: background 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    main {
+      text-align: center;
+      padding: 3rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      margin-top: 3.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    p.tagline {
+      font-size: 1.2rem;
+      color: gray;
+      margin-bottom: 2rem;
+    }
+
+    .install-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 2rem;
+    }
+
+    .install-box {
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      text-align: left;
+      align-items: center;
+      max-width: 600px;
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    body.dark .install-box {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .install-box pre {
+      margin: 0;
+      white-space: pre;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+    
+    .install-box code {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .copy-btn {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: #3730a3;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .feature {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.03);
+      transition: 0.3s;
+      text-align: left;
+    }
+
+    body.dark .feature {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+    }
+    
+    .feature h4 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .feature p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0;
+      color: gray;
+    }
+    
+    /* --- NEW: Make sure links in feature boxes are styled --- */
+    .feature p a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .feature p a:hover {
+      text-decoration: underline;
+    }
+
+
+    body.dark .feature p {
+      color: #bbb;
+    }
+    
+    .usage-example {
+      max-width: 600px;
+      margin: 1.5rem auto;
+      text-align: left;
+    }
+
+    .usage-example p {
+      font-family: monospace;
+      color: gray;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .usage-example p strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: gray;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a {
+      color: var(--accent);
+      margin: 0 0.5rem;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">lihelp</div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Theme</button>
+  </header>
+
+  <main>
+    <h1>Go Based Linux CLI Tool</h1>
+    <p class="tagline">Type in English. Get Linux commands instantly.</p>
+
+    <h2>Install — One line</h2>
+    <div class="install-section">
+      <div class="install-box">
+        <pre><code id="installCmd">curl -fsSL https://raw.githubusercontent.com/kairavb/go-linux/main/install.sh | bash</code></pre>
+      </div>
+      <button class="copy-btn" onclick="copyText('installCmd')">Copy Install Command</button>
+    </div>
+    
+    <h2>How to Use</h2>
+    <p class="tagline" style="font-size: 1.1rem; margin-bottom: 1rem;">After installing, just use the <code>lihelp</code> command:</p>
+    
+    <div class="usage-example">
+      <p><strong>$</strong> lihelp "find all files larger than 100MB in my home directory"</p>
+      <div class="install-box">
+        <pre><code>find ~ -type f -size +100M</code></pre>
+      </div>
+    </div>
+
+    <div class="usage-example">
+      <p><strong>$</strong> lihelp "unzip archive.tar.gz and show progress"</p>
+      <div class="install-box">
+        <pre><code>tar -xzvf archive.tar.gz</code></pre>
+      </div>
+    </div>
+    <p class="tagline" style="margin-top: 1.5rem; font-size: 1rem;">Then, press <strong>(Enter)</strong> to run, <strong>(e)</strong> to edit, or <strong>(q)</strong> to quit.</p>
+    
+
+    <h2>Who is this for?</h2>
+    <div class="features">
+      <div class="feature">
+        <h4>🚀 For Developers</h4>
+        <p>Stop context-switching. Instantly get complex commands for Git, Docker, <code>awk</code>, or <code>sed</code> without leaving your terminal.</p>
+      </div>
+      <div class="feature">
+        <h4>🎓 For Beginners</h4>
+        <p>Learn Linux by doing. See the exact command for your plain-English query and understand *how* it works with Dry Run.</p>
+      </div>
+      <div class="feature">
+        <h4>🛡️ For Sysadmins</h4>
+        <p>Work faster and safer. Double-check complex <code>iptables</code> or <code>find</code> commands in Dry Run mode before executing on production.</p>
+      </div>
+    </div>
+
+    <h2>Features</h2>
+    <div class="features">
+      <div class="feature">
+        <h4>🕘 Command History</h4>
+        <p>Quickly access, edit, and re-run your previous queries. No need to re-type complex questions.</p>
+      </div>
+      <div class="feature">
+        <h4>💻 System Info</h4>
+        <p>Get a comprehensive overview of your OS, kernel, CPU, memory, and disk usage with a single command.</p>
+      </div>
+      <div class="feature">
+        <h4>🧪 Dry Run</h4>
+        <p>Preview the exact command the AI suggests before it executes. Understand *what* you're running, every time.</p>
+      </div>
+      <div class="feature">
+        <h4>🔑 Sudo Mode</h4>
+        <p>For tasks that need root access, <code>lihelp</code> will securely prompt for your password, just like a regular <code>sudo</code> command.</p>
+      </div>
+    </div>
+
+    <h2>Project Details</h2>
+    <div class="features">
+      <div class="feature">
+        <h4>🖥️ Platform Support</h4>
+        <p>
+          <code>lihelp</code> is built for <strong>Linux</strong>. It is tested on modern distros like Ubuntu, Debian, Fedora, and RHEL. As a Go binary, it may also run on <strong>macOS</strong> and <strong>Windows Subsystem for Linux (WSL)</strong>.
+        </p>
+      </div>
+      <div class="feature">
+        <h4>📜 License</h4>
+        <p>
+          This project is <strong>open-source</strong>. While a specific license file is not listed, the complete source code is available on GitHub for review, modification, and distribution.
+        </p>
+      </div>
+      <div class="feature">
+        <h4>🤝 How to Contribute</h4>
+        <p>
+          Contributions are welcome! The best way to help is to <a href="https://github.com/kairavb/go-linux/issues" target="_blank">report a bug</a> or <a href="https://github.com/kairavb/go-linux/pulls" target="_blank">submit a pull request</a>. Fork the repo and start building!
+        </p>
+      </div>
+    </div>
+    
+  </main>
+
+  <footer>
+    <p>© 2025 lihelp — Built with Go · Made by Kairav Bhatia</p>
+    <p>
+      <a href="https://github.com/kairavb/go-linux" target="_blank">GitHub</a>·
+      <a href="https://twitter.com/kairavb8" target="_blank">Twitter</a>·
+      <a href="mailto:kairavbhatia8@gmail.com">Contact</a>
+    </p>
+  </footer>
+
+  <script>
+    function copyText(id) {
+      const el = document.getElementById(id);
+      navigator.clipboard.writeText(el.textContent);
+      alert('Command copied!');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>
