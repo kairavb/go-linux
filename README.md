@@ -37,6 +37,33 @@ To build the executable:
 go build -o lihelp .
 ```
 
+### Updated CLI Help Output
+
+- Running lihelp without arguments:
+
+  ```bash
+  ./lihelp
+  ```
+
+- Gives output, (Updated)
+
+  ```bash
+  Error: requires at least 1 arg(s), only received 0
+  Usage:
+  lihelp [description] [flags]
+  lihelp [command]
+
+  Available Commands:
+  completion Generate the autocompletion script for the specified shell
+  help Help about any command
+  history Show and interact with command history
+
+  Flags:
+  -d, --dry-run Preview command without running
+  -h, --help help for lihelp
+  -m, --monitor Show system monitor info
+  ```
+
 ### Run Directly
 
 You can run the tool directly using Go:
@@ -74,6 +101,15 @@ Or after building:
 
 - `--dry-run` or `-d`: Generate and explain the command but do not execute it.
 - `--run-monitor` or `-m`: Enable monitoring mode for ongoing command assistance.
+
+## Why lihelp?
+
+- Beginners often struggle with remembering commands and flags
+- Fear of breaking the system discourages experimentation
+- lihelp encourages learning
+- Explaining commands clearly
+- Allowing safe previews before execution
+- Keeping a history for revision
 
 ## Contributing
 
