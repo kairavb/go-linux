@@ -12,7 +12,8 @@ A CLI tool that translates natural language into Linux shell commands, helps use
 - **Command Explanation**: Each generated command comes with a detailed explanation to help users learn.
 - **Optional Execution**: Choose to run the command or just view it (with dry-run mode available).
 - **Command Logging**: Keeps a history of generated commands for reference.
-- **Monitoring Mode**: Run in monitor mode to continuously generate commands.
+- **Monitoring Mode**: Run in monitor mode to get system information.
+- **Safe Mode**: Shows warnings and reasoning before executing any hostile command.
 
 ## Installation
 
